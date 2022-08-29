@@ -1,5 +1,5 @@
 # Case Study Overview:
-#   Company Wants to maximize the number of annual memberships
+# 1. Company Wants to maximize the number of annual memberships
 # 2. How do causal riders and annual members use the product differently?
 # 3. Why would casual riders buy Cyclistic annual memberships?
 # 4. How can Cyclistic use digital media 
@@ -126,3 +126,40 @@ all_trips <- bind_rows(q2_2018, q3_2018, q4_2018,
 all_trips <- all_trips %>%
   select(-c(start_lat, start_lng, end_lat, end_lng, birthyear))
 # Ready for cleaning
+
+# CLEAN DATA
+# Evaluate new data frame
+colnames(all_trips) #Col Names
+nrow(all_trips) #Row Count: 4711947
+dim(all_trips) #DF Dimensions: 10C by 4711947
+head(all_trips) #First 6 Rows
+str(all_trips) #Col Names and Data Types
+summary(all_trips) #Stat Summary of numerical data
+
+#Issues that need checking:
+# 1. Check that member_casual column only has 2 types, casual and subscriber
+# 2. Add day, month, and year columns for further analysis in the future
+# 3. Create a ride_length column that calculates the length of ride for each row
+# 4. Delete rides that have negative trip duration
+
+# Pull Table of just count of member_casual column values
+table(all_trips$member_casual)
+
+# Reassign to 2020 labels
+all_trips <- all_trips %>%
+  mutate(member_casual = recode(member_casual,
+                                "Subscriber" = "member",
+                                "Customer" = "casual"))
+
+# Check member_casual is correct now
+table(all_trips$member_casual)
+
+# Populate day, month, and year columns from the date of activity
+# Assigning new columns with as.Date() function with % argument
+all_trips$date <- as.Date(all_trips$started_at) 
+all_trips$month <- format(as.Date(all_trips$date),"%m")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_week <- format(as.Date(all_trips$date), "%A")
+
+# Inspect Structure
+str(all_trips)

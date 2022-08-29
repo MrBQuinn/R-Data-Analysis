@@ -183,3 +183,19 @@ all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR"|
 # Check Columns and Structure of all_trips_v2
 colnames(all_trips_v2)
 str(all_trips_v2)
+
+# ANALYSIS
+# ride_length breakdown (all seconds)
+mean(all_trips_v2$ride_length)
+median(all_trips_v2$ride_length)
+max(all_trips_v2$ride_length)
+min(all_trips_v2$ride_length)
+# OR
+summary(all_trips_v2$ride_length)
+
+# Comparison of members and casual users 
+# Use aggregate() function, FUN = function of first value factored by the second
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = mean)
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = median)
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = min)
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = max)

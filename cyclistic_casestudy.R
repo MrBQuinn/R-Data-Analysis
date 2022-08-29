@@ -163,3 +163,23 @@ all_trips$day_week <- format(as.Date(all_trips$date), "%A")
 
 # Inspect Structure
 str(all_trips)
+
+# Add ride_length calculation col (in seconds)
+# Use difftime() function from base R that subtracts first minus second
+all_trips$ride_length <- difftime(all_trips$ended_at,all_trips$started_at)
+# check colnames() & str()
+
+# Convert ride_length from Factor to Numeric
+all_trips$ride_length <- as.numeric(as.character(all_trips$ride_length))
+# Check
+is.numeric(all_trips$ride_length)
+# True
+
+# Remove rows with start station at "HQ QR" and ride length less than zero
+# Save it as all_trips_v2, the clean version we will use for analysis
+all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR"|
+                              all_trips$ride_length < 0),]
+
+# Check Columns and Structure of all_trips_v2
+colnames(all_trips_v2)
+str(all_trips_v2)

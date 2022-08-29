@@ -199,3 +199,11 @@ aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = mean)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = median)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = min)
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, FUN = max)
+
+# Average Ride Length, Casual v Member by Day of Week
+# Correct Weekday order
+all_trips_v2$day_week <- ordered(all_trips_v2$day_week,levels=c(
+  "Sunday","Monday","Tuesday","Wednesday","Thursday", "Friday","Saturday"))
+# Aggregate average ride length by casual and member BY DAY OF WEEK
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + 
+            all_trips_v2$day_week, FUN = mean)

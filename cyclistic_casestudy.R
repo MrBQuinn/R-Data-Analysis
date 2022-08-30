@@ -207,3 +207,28 @@ all_trips_v2$day_week <- ordered(all_trips_v2$day_week,levels=c(
 # Aggregate average ride length by casual and member BY DAY OF WEEK
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + 
             all_trips_v2$day_week, FUN = mean)
+
+# Analyze Ridership by rider type and weekday
+all_trips_v2 %>% 
+  # Use mutate() and wday() functions to shorten (optional)
+  mutate(weekday = wday(started_at, label = TRUE)) %>%
+  # Use to group_by AKA "measure by", x-axis 
+  group_by(member_casual, weekday) %>%
+  # Execute summarise function with parameters separated by ',' functions
+  summarise(number_of_rides = n(),
+    average_duration = mean(ride_length)) %>%
+  # Order By Function with arrange()
+  arrange(member_casual, weekday)
+
+# Visualize Rider Type and Weekday
+# Copy above analysis, add ggplot()
+all_trips_v2 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, weekday) %>%
+  summarise(number_of_rides = n(),
+            average_duration = mean(ride_length)) %>%
+  arrange(member_casual, weekday) %>%
+  # 
+  ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +
+  geom_col(position = "dodge")
+  
